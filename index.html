@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Amenda Cakes</title>
+<meta name="description" content="Frosted Cake Can par Amenda Cakes : des gâteaux gourmands en canette, 4 saveurs. Douala, Cameroun.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;0,900;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --burgundy:#5c0b17; --burgundy-2:#7a1424; --gold:#d9a54a; --gold-2:#f1cf86;
+  --cream:#fbf3e4; --ink:#2b0e08; --muted:#6d4a3c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto;color-scheme:dark;overflow-x:clip}
+body{overflow-x:clip}
+body{background:var(--burgundy);color:var(--ink);font-family:Inter,system-ui,sans-serif;overflow-x:hidden;transition:none}
+a{color:inherit}
+
+/* calques fixes */
+#behind{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#gl{position:fixed;inset:0;width:100vw;height:100vh;z-index:1;display:block;pointer-events:none}
+#callouts{position:fixed;inset:0;z-index:2;pointer-events:none}
+main{position:relative;z-index:3}
+
+/* mots géants derrière la canette */
+.ghost{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap;font-family:"Playfair Display",serif;font-weight:900;font-size:19vw;line-height:.85;letter-spacing:-.02em;color:transparent;-webkit-text-stroke:2px rgba(92,11,23,.16);opacity:0;visibility:hidden}
+.ghost.hero{font-size:15.5vw;text-align:center;-webkit-text-stroke:0;background:linear-gradient(180deg,#f6d79a 0%,#d9a54a 45%,#9c6a22 100%);-webkit-background-clip:text;background-clip:text;opacity:1;visibility:visible}
+.ghost.hero span{display:block}
+.ghost.light{-webkit-text-stroke:2px rgba(241,207,134,.22)}
+
+/* barre du haut */
+.nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:calc(18px + env(safe-area-inset-top,0px)) max(clamp(16px,4vw,48px),env(safe-area-inset-right,0px)) 18px max(clamp(16px,4vw,48px),env(safe-area-inset-left,0px));pointer-events:none}
+.brand{display:flex;align-items:center;gap:12px;pointer-events:auto;text-decoration:none}
+.mono{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#8a1a2b,#4a0812);border:1.5px solid var(--gold);color:var(--gold-2);font-family:"Playfair Display",serif;font-weight:800;font-size:19px;letter-spacing:-1px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.brand b{display:block;font-family:"Playfair Display",serif;font-size:18px;letter-spacing:.06em;color:var(--brand-c,#f6e7c8)}
+.brand small{display:block;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
+.cta{pointer-events:auto;text-decoration:none;font-weight:600;font-size:14px;padding:12px 20px;border-radius:999px;background:var(--gold);color:var(--burgundy);box-shadow:0 8px 22px rgba(0,0,0,.18);transition:transform .25s}
+.cta:hover{transform:translateY(-2px)}
+
+.navr{display:flex;align-items:center;gap:10px;pointer-events:auto}
+.lang{display:flex;align-items:center;gap:4px;padding:10px 14px;border-radius:999px;border:1.5px solid var(--gold);background:var(--burgundy);color:var(--gold-2);font:600 13px Inter,system-ui,sans-serif;cursor:pointer;letter-spacing:.06em}
+.lang b{font-weight:600;opacity:.55}.lang i{font-style:normal;opacity:.4}
+html:not([lang="en"]) .lang .fr,html[lang="en"] .lang .en{opacity:1;color:#fff}
+.lang:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+@media (max-width:440px){.brand>span:last-child{display:none}.lang{padding:9px 11px}}
+/* sections */
+.sec{position:relative;height:100vh;min-height:560px}
+.txt{position:absolute;top:50%;transform:translateY(-50%);width:min(36vw,470px)}
+.txt.left{left:clamp(20px,7vw,110px)}
+.txt.right{right:clamp(20px,7vw,110px)}
+.dark .txt,.dark .hero-bottom,.dark .pack-top,.dark .pack-bottom{color:var(--cream)}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.kicker::before{content:"";width:28px;height:1.5px;background:currentColor}
+h1,h2{font-family:"Playfair Display",serif;font-weight:900;line-height:1.02;letter-spacing:-.01em}
+h2{font-size:clamp(34px,4.4vw,64px);color:var(--burgundy)}
+.dark h2{color:var(--cream)}
+h2 em{font-style:italic;font-weight:600;color:var(--gold)}
+.split .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.06em}
+.split .w>span{display:inline-block}
+p.lead{margin-top:20px;font-size:clamp(15px,1.15vw,18px);line-height:1.65;color:var(--muted);max-width:42ch}
+.dark p.lead{color:rgba(251,243,228,.78)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.55);border:1px solid rgba(92,11,23,.12);font-size:14px;font-weight:500;color:var(--ink);backdrop-filter:blur(6px)}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--gold);flex:0 0 9px}
+.price{display:flex;align-items:baseline;gap:10px;margin-top:28px;font-family:"Playfair Display",serif;font-weight:900;font-size:clamp(44px,5vw,76px);color:var(--burgundy);line-height:1}
+.price small{font-family:Inter;font-weight:600;font-size:16px;letter-spacing:.1em;color:var(--gold)}
+.num{font-family:"Playfair Display",serif;font-size:13px;font-weight:600;color:var(--muted);margin-top:14px;letter-spacing:.2em}
+
+/* héro */
+.hero-bottom{position:absolute;left:0;right:0;bottom:7vh;text-align:center;padding:0 20px}
+.hero-bottom .tag{font-family:"Playfair Display",serif;font-style:italic;font-size:clamp(22px,2.4vw,34px);color:var(--gold-2)}
+.hero-bottom p{margin-top:10px;font-size:14px;letter-spacing:.22em;text-transform:uppercase;color:rgba(251,243,228,.7)}
+.cue{margin:22px auto 0;width:26px;height:42px;border:1.5px solid rgba(241,207,134,.6);border-radius:14px;position:relative}
+.cue::after{content:"";position:absolute;left:50%;top:8px;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:var(--gold-2);animation:cue 1.6s infinite}
+@keyframes cue{0%{transform:translateY(0);opacity:1}80%{transform:translateY(14px);opacity:0}100%{opacity:0}}
+.hero-side{position:absolute;top:50%;transform:translateY(-50%);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:rgba(241,207,134,.75);writing-mode:vertical-rl}
+.hero-side.l{left:clamp(16px,3vw,40px);transform:translateY(-50%) rotate(180deg)}
+.hero-side.r{right:clamp(16px,3vw,40px)}
+
+/* étiquettes reliées à la canette */
+.co{position:absolute;left:0;top:0;display:flex;align-items:center;opacity:0;will-change:transform}
+.co .dot{width:12px;height:12px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 5px rgba(217,165,74,.25);flex:0 0 12px;margin-left:-6px}
+.co .ln{height:1.5px;width:90px;background:linear-gradient(90deg,var(--gold),rgba(92,11,23,.5));transform-origin:left}
+.co .lb{margin-left:10px;padding:8px 14px;border-radius:12px;background:rgba(255,255,255,.82);border:1px solid rgba(92,11,23,.12);font-size:14px;font-weight:600;color:var(--burgundy);white-space:nowrap;box-shadow:0 8px 20px rgba(60,10,10,.08)}
+
+/* pack */
+.pack-top{position:absolute;top:15vh;left:0;right:0;text-align:center;padding:0 20px}
+.pack-top h2{font-size:clamp(40px,5.4vw,80px)}
+.pack-bottom{position:absolute;bottom:8vh;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:16px;padding:0 20px;text-align:center}
+.pack-price{font-family:"Playfair Display",serif;font-weight:900;font-size:clamp(48px,6vw,92px);line-height:1;color:var(--gold-2)}
+.pack-price small{font-family:Inter;font-size:16px;font-weight:600;letter-spacing:.12em;color:var(--gold)}
+.call{display:inline-flex;align-items:center;gap:12px;text-decoration:none;font-weight:700;font-size:18px;padding:16px 28px;border-radius:999px;background:var(--gold);color:var(--burgundy);box-shadow:0 14px 30px rgba(0,0,0,.25)}
+.call svg{width:20px;height:20px}
+.where{font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:rgba(251,243,228,.7)}
+footer{position:relative;z-index:3;text-align:center;padding:26px 20px 34px;font-size:12px;letter-spacing:.14em;color:rgba(251,243,228,.6);background:var(--burgundy)}
+footer em{font-family:"Playfair Display",serif;font-style:italic;letter-spacing:0;font-size:18px;color:var(--gold-2);display:block;margin-bottom:6px}
+
+
+/* ───── pages complètes : commande, étapes, contact ───── */
+.page{position:relative;z-index:3;background:var(--cream);color:var(--ink);padding-block:clamp(64px,10vw,120px);padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.page.alt{background:#f3e2c8}
+.page.deep{background:var(--burgundy);color:var(--cream)}
+.wrap{max-width:1120px;margin:0 auto}
+.page h2{text-wrap:balance}
+.page .lead{margin-top:14px;font-size:17px;line-height:1.6;color:var(--muted);max-width:56ch}
+.page.deep .lead{color:rgba(251,243,228,.78)}
+.order{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;margin-top:44px;align-items:start}
+.menu{display:grid;gap:12px}
+.item{display:grid;grid-template-columns:54px 1fr auto;gap:16px;align-items:center;padding:16px 18px;border-radius:18px;background:#fff;border:1px solid rgba(92,11,23,.1)}
+.item .sw{width:54px;height:54px;border-radius:14px;position:relative;overflow:hidden}
+.item .sw::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 0 30%,rgba(255,255,255,.75) 30% 42%,transparent 42% 64%,rgba(255,255,255,.75) 64% 74%,transparent 74%)}
+.item h3{font-family:"Playfair Display",serif;font-size:20px;font-weight:800;color:var(--burgundy)}
+.item p{font-size:13px;color:var(--muted);margin-top:3px;line-height:1.4}
+.item .pr{font-weight:700;font-size:14px;color:var(--ink);margin-top:6px;font-variant-numeric:tabular-nums}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--burgundy);background:transparent;color:var(--burgundy);font-size:18px;font-weight:700;cursor:pointer;line-height:1}
+.qty button:hover{background:var(--burgundy);color:var(--cream)}
+.qty button:focus-visible,.send:focus-visible,.copy:focus-visible,.cta:focus-visible,.call:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.qty output{min-width:26px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+.cart{position:sticky;top:96px;padding:26px;border-radius:24px;background:var(--burgundy);color:var(--cream);box-shadow:0 24px 50px rgba(60,10,10,.18)}
+.cart h3{font-family:"Playfair Display",serif;font-size:24px}
+.cart ul{list-style:none;margin:16px 0;display:grid;gap:8px;font-size:14px;min-height:22px}
+.cart li{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+.cart .empty{color:rgba(251,243,228,.6)}
+.cart .tot{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid rgba(241,207,134,.3);padding-top:14px;font-variant-numeric:tabular-nums}
+.cart .tot b{font-family:"Playfair Display",serif;font-size:34px;color:var(--gold-2)}
+.cart label{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:16px 0 6px}
+.cart textarea{width:100%;border-radius:12px;border:1px solid rgba(241,207,134,.35);background:rgba(255,255,255,.06);color:var(--cream);padding:10px 12px;font:inherit;font-size:14px;resize:vertical;min-height:64px}
+.send{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:16px;padding:15px 20px;border-radius:999px;background:var(--gold);color:var(--burgundy);font-weight:700;text-decoration:none;font-size:16px}
+.send[aria-disabled="true"]{opacity:.45;pointer-events:none}
+.send svg{width:20px;height:20px}
+.hint{font-size:12px;color:rgba(251,243,228,.6);margin-top:10px;text-align:center}
+.tip{display:inline-block;margin-left:8px;font-size:11px;font-weight:700;letter-spacing:.08em;padding:3px 8px;border-radius:999px;background:var(--gold);color:var(--burgundy);vertical-align:middle}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px;counter-reset:st}
+.step{padding:28px 24px;border-top:2px solid var(--burgundy)}
+.step::before{counter-increment:st;content:counter(st);font-family:"Playfair Display",serif;font-size:56px;font-weight:900;color:var(--gold);line-height:1}
+.step h3{font-family:"Playfair Display",serif;font-size:24px;color:var(--burgundy);margin-top:10px}
+.step p{margin-top:8px;color:var(--muted);line-height:1.6;font-size:15px}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.contact h2{color:var(--cream);font-size:clamp(34px,4.6vw,60px)}
+.cards{display:grid;gap:14px}
+.ccard{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:20px 22px;border-radius:20px;border:1px solid rgba(241,207,134,.28);background:rgba(255,255,255,.04)}
+.ccard small{display:block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.ccard b{display:block;font-size:22px;margin-top:4px;user-select:all;font-variant-numeric:tabular-nums;color:var(--cream)}
+.ccard .acts{display:flex;gap:8px}
+.copy,.wa{border:1.5px solid var(--gold);background:transparent;color:var(--gold-2);border-radius:999px;padding:9px 16px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none}
+.wa{background:var(--gold);color:var(--burgundy)}
+@media (max-width:820px){
+  .order,.contact{grid-template-columns:1fr}
+  .cart{position:static}
+  .steps{grid-template-columns:1fr;gap:6px}
+  .item{grid-template-columns:44px 1fr;row-gap:12px}
+  .item .sw{width:44px;height:44px}
+  .item .qty{grid-column:1 / -1;justify-content:flex-end}
+}
+@media (prefers-reduced-motion:reduce){.cue::after,#loader .mono{animation:none}}
+
+/* chargement */
+#loader{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:var(--burgundy);transition:opacity .8s}
+#loader .mono{width:76px;height:76px;font-size:30px;animation:pulse 1.4s infinite}
+@keyframes pulse{50%{transform:scale(1.08)}}
+#loader.out{opacity:0;pointer-events:none}
+
+/* mobile : canette en haut, texte en bas */
+@media (max-width:820px),(max-aspect-ratio:9/10){
+  .txt,.txt.left,.txt.right{left:16px;right:16px;width:auto;top:auto;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:none!important;max-height:46vh;overflow:hidden;padding:18px 18px 16px;border-radius:24px;background:rgba(251,243,228,.82);backdrop-filter:blur(10px);box-shadow:0 18px 40px rgba(40,10,10,.12)}
+  .dark .txt{background:rgba(60,8,16,.7)}
+  .sec h2{font-size:clamp(26px,7.4vw,34px)}
+  p.lead{margin-top:8px;font-size:13.5px;line-height:1.5}
+  .chips{margin-top:10px;gap:6px}.chip{padding:6px 10px;font-size:12px}
+  .price{margin-top:10px;font-size:36px}
+  .pack-top h2{font-size:clamp(34px,10vw,46px)}
+  .pack-bottom{bottom:calc(6vh + env(safe-area-inset-bottom,0px));gap:12px}
+  .pack-price{font-size:52px}
+  .call{font-size:16px;padding:14px 24px}
+  .hero-bottom{bottom:5vh}
+  .kicker{margin-bottom:10px}
+  .hero-side{display:none}
+  .co{display:none}
+  .pack-top{top:11vh}
+  .ghost{font-size:24vw}
+  .ghost.hero{font-size:22vw;top:42%}
+  .cta{padding:10px 14px;font-size:13px}
+}
+</style>
+<script type="importmap">
+{"imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+</head>
+<body>
+<div id="loader"><div class="mono">AC</div></div>
+
+<div id="behind">
+  <div class="ghost hero" data-for="0"><span>FROSTED</span><span>CAKE CAN</span></div>
+  <div data-en="LAYERS" class="ghost" data-for="1">COUCHES</div>
+  <div class="ghost" data-for="2">TOPPING</div>
+  <div data-en="SPECULOOS" class="ghost" data-for="3">SPÉCULOS</div>
+  <div data-en="PISTACHIO" class="ghost" data-for="4">PISTACHE</div>
+  <div class="ghost" data-for="5">OREO</div>
+  <div class="ghost" data-for="6">BUENO</div>
+  <div data-en="DISCOVERY" class="ghost light" data-for="7">DÉCOUVERTE</div>
+</div>
+
+<canvas id="gl"></canvas>
+<div id="callouts"></div>
+
+<header class="nav">
+  <a class="brand" href="#top"><span class="mono">AC</span><span><b>AMENDA CAKES</b><small>Frosted dreams</small></span></a>
+  <div class="navr"><button class="lang" id="lang" type="button" aria-label="Changer de langue / Switch language"><b class="fr">FR</b><i>/</i><b class="en">EN</b></button><a data-en="Order" class="cta" href="#commander">Commander</a></div>
+</header>
+
+<main id="top">
+  <!-- 0 · rotation -->
+  <section class="sec dark" data-bg="#5c0b17" data-flavor="speculos">
+    <div data-en="Indulgent cakes" class="hero-side l">Des gâteaux gourmands</div>
+    <div data-en="Full of flavour" class="hero-side r">Pleins de saveurs</div>
+    <div class="hero-bottom">
+      <div data-en="Happiness in a can" class="tag">Le goût du bonheur en canette</div>
+      <p data-en="Douala · Cameroon">Douala · Cameroun</p>
+      <div class="cue"></div>
+    </div>
+  </section>
+
+  <!-- 1 · texte à gauche -->
+  <section class="sec" data-bg="#f7ecdc" data-flavor="speculos">
+    <div class="txt left">
+      <div data-en="01 — Layer after layer" class="kicker a">01 — Couche après couche</div>
+      <h2 data-en="Every spoonful, a &lt;em&gt;new&lt;/em&gt; flavour." class="split">Chaque cuillère, une <em>nouvelle</em> saveur.</h2>
+      <p data-en="Soft sponge, silky whipped cream, melting spread and crunchy biscuit, layered by hand in a clear can." class="lead a">Génoise moelleuse, crème chantilly onctueuse, pâte fondante et biscuit croquant, superposés à la main dans une canette transparente.</p>
+      <div class="chips a"><span data-en="&lt;i&gt;&lt;/i&gt;Soft, melt-in-the-mouth cake" class="chip"><i></i>Gâteau moelleux et fondant</span><span data-en="&lt;i&gt;&lt;/i&gt;Rich, delicious taste" class="chip"><i></i>Goût riche et délicieux</span></div>
+    </div>
+  </section>
+
+  <!-- 2 · texte à droite -->
+  <section class="sec" data-bg="#f3e2c8" data-flavor="speculos">
+    <div class="txt right">
+      <div data-en="02 — From the top" class="kicker a">02 — Vue du dessus</div>
+      <h2 data-en="A &lt;em&gt;generous&lt;/em&gt; topping, right up to the lid." class="split">Un topping <em>généreux</em>, jusqu’au couvercle.</h2>
+      <p data-en="Crunchy crumbs on the last layer of cream. Open it, dig in, enjoy." class="lead a">Des éclats croustillants posés sur la dernière couche de crème. Tu ouvres, tu plonges ta cuillère, tu savoures.</p>
+      <div class="chips a"><span data-en="&lt;i&gt;&lt;/i&gt;Handy size" class="chip"><i></i>Format pratique</span><span data-en="&lt;i&gt;&lt;/i&gt;Easy to eat" class="chip"><i></i>Facile à déguster</span><span data-en="&lt;i&gt;&lt;/i&gt;Perfect for any occasion" class="chip"><i></i>Idéal pour toutes les occasions</span></div>
+    </div>
+  </section>
+
+  <!-- 3 à 6 · les saveurs -->
+  <section class="sec" data-bg="#f2dcc0" data-flavor="speculos">
+    <div class="txt right">
+      <div data-en="Flavour 01 / 04" class="kicker a">Saveur 01 / 04</div>
+      <h2 data-en="Can’ &lt;em&gt;Speculoos&lt;/em&gt;" class="split">Can’ <em>Spéculos</em></h2>
+      <p data-en="Vanilla sponge, vanilla whipped cream, Speculoos spread and Speculoos biscuit." class="lead a">Génoise vanille, crème chantilly vanille, pâte Spéculos et biscuit Spéculos.</p>
+      <div class="price a"><span class="count" data-v="3500">3 500</span><small>FCFA</small></div>
+    </div>
+  </section>
+  <section class="sec" data-bg="#e9eed3" data-flavor="pistache">
+    <div class="txt left">
+      <div data-en="Flavour 02 / 04" class="kicker a">Saveur 02 / 04</div>
+      <h2 class="split">Can’ <em>Pistachio</em></h2>
+      <p data-en="Chocolate sponge, vanilla whipped cream, pistachio spread and ground pistachio." class="lead a">Génoise chocolat, crème chantilly vanille, pâte pistache et poudre de pistache.</p>
+      <div class="price a"><span class="count" data-v="3500">3 500</span><small>FCFA</small></div>
+    </div>
+  </section>
+  <section class="sec" data-bg="#ece6df" data-flavor="oreo">
+    <div class="txt right">
+      <div data-en="Flavour 03 / 04" class="kicker a">Saveur 03 / 04</div>
+      <h2 class="split">Can’ <em>Oreo</em></h2>
+      <p data-en="Chocolate sponge, Oreo whipped cream, Oreo spread and Oreo biscuit." class="lead a">Génoise chocolat, crème chantilly Oreo, pâte Oreo et biscuit Oreo.</p>
+      <div class="price a"><span class="count" data-v="2500">2 500</span><small>FCFA</small></div>
+    </div>
+  </section>
+  <section class="sec" data-bg="#f0dcc5" data-flavor="bueno">
+    <div class="txt left">
+      <div data-en="Flavour 04 / 04" class="kicker a">Saveur 04 / 04</div>
+      <h2 class="split">Can’ <em>Bueno</em></h2>
+      <p data-en="Chocolate sponge, chocolate whipped cream, Bueno spread and Kinder Bueno pieces." class="lead a">Génoise chocolat, crème chantilly chocolat, pâte Bueno et morceaux de Kinder Bueno.</p>
+      <div class="price a"><span class="count" data-v="2500">2 500</span><small>FCFA</small></div>
+    </div>
+  </section>
+
+  <!-- 7 · pack -->
+  <section class="sec dark" data-bg="#5c0b17" data-flavor="bueno">
+    <div class="pack-top">
+      <div data-en="All 4 flavours" class="kicker a">Les 4 saveurs</div>
+      <h2 data-en="&lt;em&gt;Discovery&lt;/em&gt; pack" class="split">Pack <em>découverte</em></h2>
+    </div>
+    <div class="pack-bottom">
+      <div class="pack-price a"><span class="count" data-v="10000">10 000</span> <small>FCFA</small></div>
+      <a class="call a" href="#commander"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>654 13 44 82</a>
+      <div data-en="Douala · Cameroon" class="where a">Douala · Cameroun</div>
+    </div>
+  </section>
+</main>
+
+<section class="page" id="commander">
+  <div class="wrap">
+    <div data-en="Order" class="kicker">Commande</div>
+    <h2 data-en="Build your order">Compose ta commande</h2>
+    <p data-en="Pick your flavours and quantities. Your message is ready to go on WhatsApp: all you do is send it." class="lead">Choisis tes saveurs et tes quantités. Le message part tout prêt sur WhatsApp : il ne te reste qu’à l’envoyer.</p>
+    <div class="order">
+      <div class="menu" id="menu"></div>
+      <aside class="cart" aria-live="polite">
+        <h3 data-en="Your order">Ta commande</h3>
+        <ul id="lines"><li class="empty" data-en="No cans yet.">Aucune canette pour l’instant.</li></ul>
+        <div class="tot"><span>Total</span><b><span id="total">0</span> <small style="font-size:14px">FCFA</small></b></div>
+        <label data-en="Details (area, date, occasion…)" for="note">Précisions (quartier, date, occasion…)</label>
+        <textarea id="note" placeholder="Ex. : retrait samedi, anniversaire à Bonamoussadi"></textarea>
+        <a class="send" id="send" href="https://wa.me/237654134482" target="_blank" rel="noopener" aria-disabled="true"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s1 2.5 1.1 2.7c.1.2 1.9 2.9 4.6 4 1.7.7 2.4.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg><span data-en="Send on WhatsApp">Envoyer sur WhatsApp</span></a>
+        <p data-en="Or call 654 13 44 82" class="hint">Ou appelle le 654 13 44 82</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="page alt" id="etapes">
+  <div class="wrap">
+    <div data-en="How it works" class="kicker">Comment ça marche</div>
+    <h2 data-en="Three steps, one spoon">Trois étapes, une cuillère</h2>
+    <div class="steps">
+      <div class="step"><h3 data-en="You choose">Tu choisis</h3><p data-en="One flavour, several, or the discovery pack with all four.">Une saveur, plusieurs, ou le pack découverte avec les quatre.</p></div>
+      <div class="step"><h3 data-en="You send">Tu envoies</h3><p data-en="Your order reaches our WhatsApp with the details and the total.">Ta commande arrive sur notre WhatsApp avec le détail et le total.</p></div>
+      <div class="step"><h3 data-en="We confirm">On confirme</h3><p data-en="We reply to arrange pickup or delivery in Douala.">On te répond pour fixer le retrait ou la livraison à Douala.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="page deep" id="contact">
+  <div class="wrap contact">
+    <div>
+      <div class="kicker">Contact</div>
+      <h2 data-en="Craving a &lt;em&gt;can&lt;/em&gt;?">Une envie de <em>canette</em> ?</h2>
+      <p data-en="Amenda Cakes makes every can by hand in Douala. Message us for an order, a birthday or an event." class="lead">Amenda Cakes prépare chaque canette à la main, à Douala. Écris-nous pour une commande, un anniversaire ou un événement.</p>
+    </div>
+    <div class="cards">
+      <div class="ccard"><div><small data-en="WhatsApp and calls">WhatsApp et appel</small><b id="num">654 13 44 82</b></div>
+        <div class="acts"><button class="copy" id="copy" type="button" data-en="Copy">Copier</button><a class="wa" href="https://wa.me/237654134482" target="_blank" rel="noopener">WhatsApp</a></div></div>
+      <div class="ccard"><div><small data-en="Where">Où</small><b data-en="Douala · Cameroon">Douala · Cameroun</b></div></div>
+    </div>
+  </div>
+</section>
+<footer><em data-en="Happiness in a can">Le goût du bonheur en canette</em>AMENDA CAKES · FROSTED DREAMS · DOUALA</footer>
+
+<script>
+(function(){
+  var en=false; try{ en = location.hash==='#en' || (location.hash!=='#fr' && localStorage.getItem('ac-lang')==='en'); }catch(e){ en = location.hash==='#en'; }
+  window.LANG = en ? 'en' : 'fr';
+  document.documentElement.lang = window.LANG;
+  if (en) {
+    document.querySelectorAll('[data-en]').forEach(function(el){ el.innerHTML = el.getAttribute('data-en'); });
+    document.title = 'Amenda Cakes';
+    var n=document.getElementById('note'); if(n) n.placeholder='E.g. pickup on Saturday, birthday in Bonamoussadi';
+  }
+  document.getElementById('lang').addEventListener('click', function(){
+    var next = window.LANG==='en' ? 'fr' : 'en';
+    try{ localStorage.setItem('ac-lang', next); }catch(e){}
+    location.hash = next; location.reload();
+  });
+})();
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+gsap.registerPlugin(ScrollTrigger);
+
+/* ───────────── saveurs ───────────── */
+const FLAVORS = {
+  speculos:{ crumbs:['#7a3a14','#a35a24','#c47e3e','#e0a764','#5e2b0e'],
+    bands:[['crumb',.13],['cake',.19,'#ecc683'],['cream',.14,'#fbf2e1'],['crumb',.1],['paste',.06,'#b05c26'],['cake',.15,'#ecc683'],['cream',.12,'#fbf2e1'],['crumb',.11]],
+    labels:['Crème chantilly vanille','Pâte Spéculos','Biscuit Spéculos','Génoise vanille'] },
+  pistache:{ crumbs:['#7ea42d','#a3c63f','#c2dd68','#5e7e1f','#6b3a22'],
+    bands:[['crumb',.11],['cake',.17,'#5b3322'],['cream',.12,'#fbf5e9'],['paste',.1,'#a9c94a'],['crumb',.09],['cake',.15,'#5b3322'],['cream',.12,'#fbf5e9'],['paste',.05,'#a9c94a'],['crumb',.09]],
+    labels:['Poudre de pistache','Crème chantilly vanille','Pâte pistache','Génoise chocolat'] },
+  oreo:{ crumbs:['#16100d','#2a1e19','#3b2c25','#0e0907','#4a3a32'],
+    bands:[['crumb',.13],['cake',.17,'#4a2b1d'],['cream',.16,'#f5f1ea',true],['crumb',.1],['cake',.15,'#4a2b1d'],['cream',.14,'#f5f1ea',true],['crumb',.13]],
+    labels:['Crème chantilly Oreo','Pâte Oreo','Biscuit Oreo','Génoise chocolat'] },
+  bueno:{ crumbs:['#7c3f17','#a9652d','#5a2a10','#c88a4a','#ead6ae'],
+    bands:[['crumb',.11],['cake',.17,'#5b3322'],['cream',.13,'#d3a97f'],['paste',.08,'#c88c48'],['chunk',.11],['cake',.14,'#5b3322'],['cream',.12,'#d3a97f'],['crumb',.12]],
+    labels:['Pâte Bueno','Kinder Bueno','Crème chantilly chocolat','Génoise chocolat'] },
+};
+const ORDER = ['speculos','pistache','oreo','bueno'];
+const EN = window.LANG === 'en';
+if (EN) {
+  FLAVORS.speculos.labels = ['Vanilla whipped cream','Speculoos spread','Speculoos biscuit','Vanilla sponge'];
+  FLAVORS.pistache.labels = ['Ground pistachio','Vanilla whipped cream','Pistachio spread','Chocolate sponge'];
+  FLAVORS.oreo.labels = ['Oreo whipped cream','Oreo spread','Oreo biscuit','Chocolate sponge'];
+  FLAVORS.bueno.labels = ['Bueno spread','Kinder Bueno','Chocolate whipped cream','Chocolate sponge'];
+}
+const T = EN ? {
+  empty:'No cans yet.', hello:'Hello Amenda Cakes, I would like to order:', total:'Total', notes:'Details', copy:'Copy', copied:'Copied', sel:'Selected', add:'Add', rem:'Remove'
+} : {
+  empty:'Aucune canette pour l’instant.', hello:'Bonjour Amenda Cakes, je souhaite commander :', total:'Total', notes:'Précisions', copy:'Copier', copied:'Copié', sel:'Sélectionné', add:'Ajouter', rem:'Retirer'
+};
+
+/* ───────────── outils ───────────── */
+function rng(seed){ return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function shade(hex, amt){ const n = parseInt(hex.slice(1), 16); let r = n >> 16, g = n >> 8 & 255, b = n & 255;
+  const f = v => Math.max(0, Math.min(255, Math.round(amt < 0 ? v * (1 + amt) : v + (255 - v) * amt)));
+  return `rgb(${f(r)},${f(g)},${f(b)})`; }
+function wave(r, base, amp){ const f = [1,2,3,4,6].map(k => ({k, a: amp * (0.35 + r() * 0.65) / Math.pow(k, .7), p: r() * 6.283}));
+  return u => base + f.reduce((s, o) => s + o.a * Math.sin(o.k * u * 6.283 + o.p), 0); }
+
+/* texture des couches (déroulée sur le tour du pot) */
+function contentsTexture(key){
+  const fl = FLAVORS[key], W = 2048, H = 1100, c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d'), r = rng(key.length * 977 + 13);
+  const tot = fl.bands.reduce((s, b) => s + b[1], 0);
+  // frontières (du bas vers le haut)
+  const bounds = [() => H + 30]; let acc = 0;
+  fl.bands.forEach((b, i) => { acc += b[1] / tot; const base = H * (1 - acc);
+    bounds.push(i === fl.bands.length - 1 ? () => -30 : wave(r, base, 18 + r() * 22)); });
+  const path = i => { g.beginPath(); const lo = bounds[i], hi = bounds[i + 1];
+    for (let x = 0; x <= W; x += 16) g.lineTo(x, hi(x / W));
+    for (let x = W; x >= 0; x -= 16) g.lineTo(x, lo(x / W)); g.closePath(); };
+  const wrap = (x, fn) => { fn(x); if (x < 60) fn(x + W); if (x > W - 60) fn(x - W); };
+  const crumbsAt = (i, density, pal) => {
+    const lo = bounds[i], hi = bounds[i + 1];
+    for (let k = 0; k < density; k++) {
+      const x = r() * W, y0 = hi(x / W) - 10, y1 = lo(x / W) + 10, y = y0 + r() * (y1 - y0);
+      const rad = 9 + r() * 22, col = pal[Math.floor(r() * pal.length)], n = 5 + Math.floor(r() * 3), rot = r() * 6.28;
+      wrap(x, xx => {
+        g.beginPath();
+        for (let j = 0; j < n; j++) { const a = rot + j / n * 6.283, rr = rad * (0.6 + r() * 0.5); g.lineTo(xx + Math.cos(a) * rr, y + Math.sin(a) * rr * 0.85); }
+        g.closePath(); g.fillStyle = col; g.fill();
+        g.fillStyle = 'rgba(255,240,210,.22)'; g.beginPath(); g.arc(xx - rad * .25, y - rad * .3, rad * .32, 0, 6.28); g.fill();
+        g.strokeStyle = 'rgba(30,10,0,.28)'; g.lineWidth = 2; g.stroke();
+      });
+    }
+  };
+  // 1) fonds
+  fl.bands.forEach((b, i) => {
+    const [type, , col, specks] = b; path(i);
+    if (type === 'crumb') { g.fillStyle = shade(fl.crumbs[0], -.25); g.fill(); return; }
+    if (type === 'chunk') { g.fillStyle = '#d3a97f'; g.fill(); return; }
+    g.fillStyle = col; g.fill();
+    g.save(); path(i); g.clip();
+    if (type === 'cake') {
+      for (let k = 0; k < 2600; k++) { const x = r() * W, y = r() * H, s = 1.5 + r() * 4.5;
+        g.fillStyle = r() < .6 ? shade(col, -.18 - r() * .15) : shade(col, .18); g.beginPath(); g.ellipse(x, y, s, s * .7, r() * 3, 0, 6.28); g.fill(); }
+    } else if (type === 'cream') {
+      for (let k = 0; k < 70; k++) { const y = r() * H, x = r() * W; g.strokeStyle = `rgba(255,255,255,${.25 + r() * .35})`; g.lineWidth = 3 + r() * 9;
+        g.beginPath(); g.moveTo(x, y); g.bezierCurveTo(x + 60, y - 20, x + 140, y + 20, x + 220, y - 5); g.stroke(); }
+      for (let k = 0; k < 40; k++) { g.strokeStyle = 'rgba(120,80,40,.06)'; g.lineWidth = 2; const y = r() * H, x = r() * W; g.beginPath(); g.moveTo(x, y); g.quadraticCurveTo(x + 80, y + 14, x + 170, y); g.stroke(); }
+      if (specks) for (let k = 0; k < 2200; k++) { g.fillStyle = `rgba(20,12,10,${.55 + r() * .4})`; const s = 1 + r() * 4; g.fillRect(r() * W, r() * H, s, s * (0.6 + r())); }
+    } else if (type === 'paste') {
+      for (let k = 0; k < 120; k++) { const y = r() * H, x = r() * W; g.strokeStyle = r() < .5 ? shade(col, .3) : shade(col, -.25); g.globalAlpha = .5; g.lineWidth = 2 + r() * 6;
+        g.beginPath(); g.moveTo(x, y); g.quadraticCurveTo(x + 50, y + (r() - .5) * 20, x + 120, y); g.stroke(); }
+      g.globalAlpha = 1;
+    }
+    g.restore();
+  });
+  // 2) morceaux et éclats, par-dessus les frontières
+  fl.bands.forEach((b, i) => {
+    if (b[0] === 'crumb') crumbsAt(i, Math.round(b[1] / tot * 5200), fl.crumbs);
+    if (b[0] === 'chunk') {
+      const lo = bounds[i], hi = bounds[i + 1];
+      for (let k = 0; k < 120; k++) { const x = r() * W, y = hi(x / W) + r() * (lo(x / W) - hi(x / W)), w = 34 + r() * 26, h = 22 + r() * 12, rot = (r() - .5) * .8;
+        wrap(x, xx => { g.save(); g.translate(xx, y); g.rotate(rot);
+          g.fillStyle = '#7a4019'; g.beginPath(); g.roundRect(-w / 2, -h / 2, w, h, 6); g.fill();
+          g.fillStyle = '#efe0bf'; g.fillRect(-w / 2 + 4, -3, w - 8, 6);
+          g.fillStyle = 'rgba(255,230,190,.25)'; g.fillRect(-w / 2 + 3, -h / 2 + 2, w - 6, 4); g.restore(); });
+      }
+      crumbsAt(i, 160, fl.crumbs);
+    }
+  });
+  // légère ombre interne en haut et en bas
+  const gr = g.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, 'rgba(40,15,5,.25)'); gr.addColorStop(.08, 'rgba(0,0,0,0)'); gr.addColorStop(.94, 'rgba(0,0,0,0)'); gr.addColorStop(1, 'rgba(40,15,5,.3)');
+  g.fillStyle = gr; g.fillRect(0, 0, W, H);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = THREE.RepeatWrapping; t.anisotropy = 8; return t;
+}
+
+/* texture du dessus (vue de haut) */
+function topTexture(key){
+  const fl = FLAVORS[key], S = 1024, c = document.createElement('canvas'); c.width = c.height = S;
+  const g = c.getContext('2d'), r = rng(key.length * 31 + 7);
+  const last = fl.bands.filter(b => b[0] === 'cream').slice(-1)[0];
+  g.fillStyle = last ? last[2] : '#fbf2e1'; g.fillRect(0, 0, S, S);
+  for (let k = 0; k < 1400; k++) { const a = r() * 6.28, d = Math.sqrt(r()) * S * .5, x = S / 2 + Math.cos(a) * d, y = S / 2 + Math.sin(a) * d, rad = 10 + r() * 26, n = 6;
+    g.beginPath(); for (let j = 0; j < n; j++) { const aa = j / n * 6.28 + r(), rr = rad * (.6 + r() * .5); g.lineTo(x + Math.cos(aa) * rr, y + Math.sin(aa) * rr); }
+    g.closePath(); g.fillStyle = fl.crumbs[Math.floor(r() * fl.crumbs.length)]; g.fill(); g.strokeStyle = 'rgba(30,10,0,.3)'; g.lineWidth = 2; g.stroke(); }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+
+/* texte imprimé sur le pot */
+function labelTexture(){
+  const W = 2048, H = 512, c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d'); g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineJoin = 'round';
+  [['FROSTED', 98], ['CAKE', 256], ['CAN', 414]].forEach(([t, y]) => {
+    g.font = '900 150px "Playfair Display", Georgia, serif';
+    g.lineWidth = 22; g.strokeStyle = '#fbf3e4'; g.strokeText(t, W / 2, y);
+    g.fillStyle = '#3a1308'; g.fillText(t, W / 2, y);
+  });
+  g.fillStyle = '#3a1308'; g.fillRect(W / 2 - 90, 488, 180, 5);
+  g.beginPath(); g.moveTo(W / 2, 480); g.lineTo(W / 2 + 10, 490); g.lineTo(W / 2, 500); g.lineTo(W / 2 - 10, 490); g.closePath(); g.fill();
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t;
+}
+
+function ribTexture(){
+  const c = document.createElement('canvas'); c.width = 512; c.height = 8; const g = c.getContext('2d');
+  for (let x = 0; x < 512; x += 8) { const gr = g.createLinearGradient(x, 0, x + 8, 0); gr.addColorStop(0, '#6060ff'); gr.addColorStop(.5, '#8080ff'); gr.addColorStop(1, '#a0a0ff'); g.fillStyle = gr; g.fillRect(x, 0, 8, 8); }
+  const t = new THREE.CanvasTexture(c); t.wrapS = THREE.RepeatWrapping; t.repeat.set(6, 1); return t;
+}
+
+function shadowTexture(){
+  const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d');
+  const gr = g.createRadialGradient(128, 128, 10, 128, 128, 128); gr.addColorStop(0, 'rgba(30,5,5,.55)'); gr.addColorStop(.55, 'rgba(30,5,5,.18)'); gr.addColorStop(1, 'rgba(30,5,5,0)');
+  g.fillStyle = gr; g.fillRect(0, 0, 256, 256); return new THREE.CanvasTexture(c);
+}
+
+/* ───────────── scène ───────────── */
+const canvas = document.getElementById('gl');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(30, innerWidth / innerHeight, 0.1, 100);
+
+scene.add(new THREE.HemisphereLight(0xfff4e6, 0x3a1a10, 0.7));
+const key = new THREE.DirectionalLight(0xffe7c4, 2.2); key.position.set(-3, 4, 5); scene.add(key);
+const rim = new THREE.DirectionalLight(0xffd59a, 2.6); rim.position.set(4, 2, -4); scene.add(rim);
+const fill = new THREE.PointLight(0xffc98a, 6, 12); fill.position.set(2.5, -1, 3); scene.add(fill);
+
+const R = 0.62, HJ = 2.0, TOP = HJ * 0.86;
+const LABEL = labelTexture(), RIBS = ribTexture(), SHADOW = shadowTexture();
+const TEX = {}; // cache par saveur
+
+const glassMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0, roughness: 0.04, transparent: true, opacity: 0.16,
+  clearcoat: 1, clearcoatRoughness: 0.03, envMapIntensity: 2.2, side: THREE.DoubleSide, depthWrite: false });
+const lidMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0, roughness: 0.22, transparent: true, opacity: 0.34,
+  clearcoat: 1, clearcoatRoughness: 0.1, envMapIntensity: 2, normalMap: RIBS, normalScale: new THREE.Vector2(.6, .6), side: THREE.DoubleSide, depthWrite: false });
+const labelMat = new THREE.MeshStandardMaterial({ map: LABEL, transparent: true, alphaTest: 0.04, roughness: 0.45, metalness: 0, side: THREE.FrontSide });
+const crumbGeo = new THREE.IcosahedronGeometry(1, 0);
+
+function texFor(k){ if (!TEX[k]) TEX[k] = { side: contentsTexture(k), top: topTexture(k) }; return TEX[k]; }
+
+function buildCan(flavor){
+  const can = new THREE.Group();     // posé par le scroll
+  const spin = new THREE.Group();    // rotation propre
+  can.add(spin);
+  const body = new THREE.Group(); body.position.y = -HJ / 2 - 0.06; spin.add(body);
+
+  // contenu
+  const t = texFor(flavor);
+  const sideMat = new THREE.MeshStandardMaterial({ map: t.side, bumpMap: t.side, bumpScale: 2.2, roughness: 0.78, metalness: 0 });
+  const side = new THREE.Mesh(new THREE.CylinderGeometry(R - 0.028, R - 0.04, TOP - 0.03, 128, 1, true), sideMat);
+  side.position.y = 0.03 + (TOP - 0.03) / 2; side.rotation.y = Math.PI; body.add(side);
+  const topMat = new THREE.MeshStandardMaterial({ map: t.top, bumpMap: t.top, bumpScale: 2, roughness: 0.85 });
+  const topDisc = new THREE.Mesh(new THREE.CircleGeometry(R - 0.028, 96), topMat); topDisc.rotation.x = -Math.PI / 2; topDisc.position.y = TOP; body.add(topDisc);
+  const bottom = new THREE.Mesh(new THREE.CircleGeometry(R - 0.04, 64), new THREE.MeshStandardMaterial({ color: 0x5a2a12, roughness: .9 }));
+  bottom.rotation.x = Math.PI / 2; bottom.position.y = 0.03; body.add(bottom);
+
+  // éclats sur le dessus
+  const N = 170, crumbs = new THREE.InstancedMesh(crumbGeo, new THREE.MeshStandardMaterial({ roughness: 0.8, flatShading: true }), N);
+  const r = rng(99), m = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), p = new THREE.Vector3(), s = new THREE.Vector3();
+  for (let i = 0; i < N; i++) { const a = r() * 6.283, d = Math.sqrt(r()) * (R - 0.09), dome = (1 - (d / R) ** 2) * 0.09;
+    p.set(Math.cos(a) * d, TOP + 0.02 + dome + r() * 0.05, Math.sin(a) * d);
+    e.set(r() * 3, r() * 3, r() * 3); q.setFromEuler(e); const sc = 0.028 + r() * 0.04; s.set(sc, sc * (0.6 + r() * 0.5), sc * (0.7 + r() * 0.5));
+    m.compose(p, q, s); crumbs.setMatrixAt(i, m); }
+  body.add(crumbs);
+
+  // pot transparent (profil tourné)
+  const prof = [[0,0],[R-.1,0],[R-.03,.015],[R,.07],[R,HJ-.16],[R-.012,HJ-.13],[R-.012,HJ-.03],[R-.004,HJ]].map(([x,y]) => new THREE.Vector2(x, y));
+  const jar = new THREE.Mesh(new THREE.LatheGeometry(prof, 128), glassMat); jar.renderOrder = 2; body.add(jar);
+  // texte imprimé
+  const lab = new THREE.Mesh(new THREE.CylinderGeometry(R + 0.004, R + 0.004, 0.98, 160, 1, true), labelMat);
+  lab.position.y = HJ * 0.47; lab.rotation.y = Math.PI; lab.renderOrder = 3; body.add(lab);
+  // couvercle
+  const lid = new THREE.Group(); lid.position.y = HJ - 0.02; body.add(lid);
+  const lidSide = new THREE.Mesh(new THREE.CylinderGeometry(R + .028, R + .028, .17, 128, 1, true), lidMat); lidSide.position.y = .085; lidSide.renderOrder = 4; lid.add(lidSide);
+  const lidTop = new THREE.Mesh(new THREE.CylinderGeometry(R + .028, R + .028, .02, 128), lidMat); lidTop.position.y = .17; lidTop.renderOrder = 4; lid.add(lidTop);
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(R + .028, .012, 12, 128), lidMat); ring.rotation.x = Math.PI / 2; ring.position.y = .17; lid.add(ring);
+  // ombre au sol
+  const sh = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 2.6), new THREE.MeshBasicMaterial({ map: SHADOW, transparent: true, depthWrite: false, opacity: .8 }));
+  sh.rotation.x = -Math.PI / 2; sh.position.y = -HJ / 2 - 0.07; can.add(sh);
+
+  can.userData = { spin, sideMat, topMat, crumbs, flavor: null, shadow: sh };
+  setFlavor(can, flavor);
+  return can;
+}
+
+function setFlavor(can, k){
+  const u = can.userData; if (u.flavor === k) return; u.flavor = k;
+  const t = texFor(k); u.sideMat.map = u.sideMat.bumpMap = t.side; u.topMat.map = u.topMat.bumpMap = t.top;
+  u.sideMat.needsUpdate = u.topMat.needsUpdate = true;
+  const pal = FLAVORS[k].crumbs, c = new THREE.Color(), r = rng(5);
+  for (let i = 0; i < u.crumbs.count; i++) { c.set(pal[Math.floor(r() * pal.length)]); u.crumbs.setColorAt(i, c); }
+  u.crumbs.instanceColor.needsUpdate = true;
+}
+
+/* éclats qui flottent autour (parallaxe) */
+const FN = 24, floaters = new THREE.InstancedMesh(crumbGeo, new THREE.MeshStandardMaterial({ roughness: .8, flatShading: true }), FN);
+const fdata = []; { const r = rng(7), c = new THREE.Color();
+  for (let i = 0; i < FN; i++) { const side = i % 2 ? 1 : -1;
+    fdata.push({ x: side * (1.6 + r() * 2.6), y: -2.2 + r() * 4.4, z: -2.5 + r() * 3.2, s: .05 + r() * .07, sp: .3 + r() * .7, ph: r() * 6.28, depth: .5 + r() * 1.5 });
+    c.set(FLAVORS.speculos.crumbs[i % 5]); floaters.setColorAt(i, c); } }
+scene.add(floaters);
+
+/* ───────────── poses par section ───────────── */
+// p = position canette, r = rotation, s = échelle, c = caméra, t = point visé
+const POSES = {
+  desk: [
+    { px:0,    py:.12,  rx:.12, rz:0,    s:1.1,  cx:0,   cy:.35, cz:8.5, tx:0,  ty:0,   call:0, pack:0, float:1 },
+    { px:1.3,  py:-.05, rx:.06, rz:-.1,  s:1.22, cx:.5,  cy:.1,  cz:7.6, tx:.5, ty:0,   call:1, pack:0, float:.5 },
+    { px:-1.45,py:-.3,  rx:.9,  rz:.06,  s:1.12, cx:0,   cy:1.7, cz:8,   tx:0,  ty:-.25,call:0, pack:0, float:0 },
+    { px:-1.55,py:-.05, rx:.14, rz:.12,  s:1.1,  cx:-.3, cy:.3,  cz:8.4, tx:0,  ty:0,   call:0, pack:0, float:0 },
+    { px:1.55, py:-.05, rx:.1,  rz:-.14, s:1.1,  cx:.3,  cy:.5,  cz:8.4, tx:0,  ty:0,   call:0, pack:0, float:0 },
+    { px:-1.55,py:-.1,  rx:.28, rz:.1,   s:1.1,  cx:-.2, cy:1,   cz:8.4, tx:0,  ty:0,   call:0, pack:0, float:0 },
+    { px:1.55, py:0,    rx:-.04,rz:-.1,  s:1.1,  cx:.2,  cy:-.2, cz:8.4, tx:0,  ty:0,   call:0, pack:0, float:0 },
+    { px:2.55, py:.05,  rx:.12, rz:0,    s:.68,  cx:0,   cy:.6,  cz:9.6, tx:0,  ty:-.1, call:0, pack:1, float:0 },
+  ],
+  mob: [
+    { px:0,  py:.5,  rx:.12, rz:0,    s:.78, cx:0,  cy:.3, cz:9.5, tx:0, ty:0,  call:0, pack:0, float:1 },
+    { px:.1, py:1.15, rx:.06, rz:-.1,  s:.6,   cx:.2, cy:.2, cz:9.5, tx:0, ty:0,  call:0, pack:0, float:.4 },
+    { px:-.1,py:1.15, rx:.9,  rz:.06,  s:.6,  cx:0,  cy:1.5,cz:9.5, tx:0, ty:-.1,call:0, pack:0, float:0 },
+    { px:-.1,py:1.15, rx:.14, rz:.12,  s:.6,  cx:0,  cy:.3, cz:9.5, tx:0, ty:0,  call:0, pack:0, float:0 },
+    { px:.1, py:1.15, rx:.1,  rz:-.14, s:.6,  cx:0,  cy:.5, cz:9.5, tx:0, ty:0,  call:0, pack:0, float:0 },
+    { px:-.1,py:1.15, rx:.28, rz:.1,   s:.6,  cx:0,  cy:.9, cz:9.5, tx:0, ty:0,  call:0, pack:0, float:0 },
+    { px:.1, py:1.15, rx:-.04,rz:-.1,  s:.6,  cx:0,  cy:-.1,cz:9.5, tx:0, ty:0,  call:0, pack:0, float:0 },
+    { px:.69,py:.12, rx:.12, rz:0,    s:.32,  cx:0,  cy:.3, cz:9.5, tx:0, ty:0,  call:0, pack:1, float:0 },
+  ]
+};
+const SLOTS = { desk: { xs: [-2.55, -.85, .85], y: .05, s: .68 }, mob: { xs: [-.69, -.23, .23], ys: [.12, .12, .12], y: .12, s: .32 } };
+// le pack : la canette principale (Bueno) prend la 4e place, les 3 autres apparaissent
+
+let mode = (innerWidth < 820 || innerWidth / innerHeight < .9) ? 'mob' : 'desk';
+const state = { ...POSES[mode][0] };
+
+/* ───────────── callouts reliés à la canette ───────────── */
+const coLayer = document.getElementById('callouts');
+const ANCH = [.8, .58, .38, .17].map((f, i) => ({ y: -HJ / 2 - 0.06 + HJ * f * .86 + .05, a: .95 - i * .06 }));
+const coEls = ANCH.map(() => { const d = document.createElement('div'); d.className = 'co'; d.innerHTML = '<span class="dot"></span><span class="ln"></span><span class="lb"></span>'; coLayer.appendChild(d); return d; });
+function setLabels(k){ coEls.forEach((el, i) => el.querySelector('.lb').textContent = FLAVORS[k].labels[i]); }
+setLabels('speculos');
+
+/* ───────────── montage ───────────── */
+let main, extras = [];
+async function init(){
+  try { await Promise.race([document.fonts.load('900 150px "Playfair Display"'), new Promise(r => setTimeout(r, 2500))]); } catch (e) {}
+  ORDER.forEach(texFor);
+  main = buildCan('speculos'); scene.add(main);
+  extras = ['speculos', 'pistache', 'oreo'].map(k => { const c = buildCan(k); c.visible = false; scene.add(c); return c; });
+  buildScroll();
+  requestAnimationFrame(loop);
+  setTimeout(() => document.getElementById('loader').classList.add('out'), 200);
+}
+
+/* ───────────── scroll ───────────── */
+let master;
+function buildScroll(){
+  if (master) { master.scrollTrigger.kill(); master.kill(); }
+  const P = POSES[mode]; Object.assign(state, P[0]);
+  master = gsap.timeline({ defaults: { ease: 'power2.inOut' }, scrollTrigger: { trigger: 'main', start: 'top top', end: 'bottom bottom', scrub: 1.2 } });
+  for (let i = 1; i < P.length; i++) master.to(state, { ...P[i], duration: .62 }, i - 1 + .22);
+  master.to({}, { duration: .16 }, P.length - 1 - .16);
+}
+
+const secs = [...document.querySelectorAll('.sec')];
+const ghosts = [...document.querySelectorAll('.ghost')];
+const flourish = { v: 0 }; let currentFlavor = 'speculos';
+
+function swapFlavor(k){
+  if (k === currentFlavor) return; currentFlavor = k;
+  gsap.to(flourish, { v: '+=' + Math.PI * 2, duration: 1.15, ease: 'power3.inOut' });
+  gsap.delayedCall(.5, () => { setFlavor(main, k); setLabels(k); });
+}
+
+function splitWords(el){
+  const walk = node => [...node.childNodes].forEach(n => {
+    if (n.nodeType === 3) { const frag = document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach(w => { if (!w) return; if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(' ')); return; }
+        const o = document.createElement('span'); o.className = 'w'; const i = document.createElement('span'); i.textContent = w; o.appendChild(i); frag.appendChild(o); });
+      n.replaceWith(frag);
+    } else if (n.nodeType === 1) walk(n);
+  });
+  walk(el);
+}
+document.querySelectorAll('.split').forEach(splitWords);
+
+secs.forEach((sec, i) => {
+  // fond de page + saveur
+  ScrollTrigger.create({ trigger: sec, start: 'top 55%', end: 'bottom 55%',
+    onToggle: self => { if (!self.isActive) return;
+      gsap.to(document.body, { backgroundColor: sec.dataset.bg, duration: .8, ease: 'power2.out' });
+      document.documentElement.style.setProperty('--brand-c', sec.classList.contains('dark') ? '#f6e7c8' : '#5c0b17');
+      swapFlavor(sec.dataset.flavor); } });
+
+  // entrée des textes
+  const words = sec.querySelectorAll('.split .w>span'), bits = sec.querySelectorAll('.a');
+  const fromX = mode === 'mob' ? 0 : sec.querySelector('.txt.right') ? 60 : sec.querySelector('.txt.left') ? -60 : 0;
+  if (words.length || bits.length) {
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo(words, { yPercent: 115, rotate: 6 }, { yPercent: 0, rotate: 0, duration: .9, ease: 'expo.out', stagger: .06 }, 0)
+      .fromTo(bits, { autoAlpha: 0, x: fromX, y: 24, filter: 'blur(6px)' }, { autoAlpha: 1, x: 0, y: 0, filter: 'blur(0px)', duration: .8, ease: 'power3.out', stagger: .09 }, .12);
+    sec.querySelectorAll('.chip').forEach((c, j) => tl.fromTo(c, { scale: .7, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: .5, ease: 'back.out(2)' }, .5 + j * .08));
+    const cnt = sec.querySelector('.count');
+    if (cnt) { const o = { v: 0 }, v = +cnt.dataset.v;
+      tl.fromTo(o, { v: 0 }, { v, duration: 1.1, ease: 'power2.out', onUpdate: () => cnt.textContent = Math.round(o.v / 100 * 100).toLocaleString('fr-FR').replace(/ | /g, ' ') }, .35); }
+    ScrollTrigger.create({ trigger: sec, start: 'top 62%', end: 'bottom 38%', onEnter: () => tl.play(), onEnterBack: () => tl.play(), onLeave: () => tl.reverse(), onLeaveBack: () => tl.reverse() });
+    if (i === 0) tl.progress(1);
+  }
+
+  // texte en parallaxe
+  const txt = sec.querySelector('.txt');
+  if (txt && mode !== 'mob') gsap.fromTo(txt, { y: 70 }, { y: -70, ease: 'none', scrollTrigger: { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: true } });
+
+  // mots géants derrière
+  const gh = ghosts[i];
+  if (gh) {
+    if (i === 0) {
+      gsap.to(gh, { yPercent: -90, autoAlpha: 0, scale: .85, ease: 'none', scrollTrigger: { trigger: sec, start: 'top top', end: 'bottom top', scrub: true } });
+    } else {
+      const dir = i % 2 ? 1 : -1;
+      const gt = gsap.timeline({ scrollTrigger: { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: true } });
+      gt.fromTo(gh, { xPercent: -50 + 22 * dir, autoAlpha: 0 }, { xPercent: -50 - 22 * dir, ease: 'none', duration: 1 }, 0)
+        .to(gh, { autoAlpha: 1, duration: .25, ease: 'none' }, .05)
+        .to(gh, { autoAlpha: 0, duration: .25, ease: 'none' }, .7);
+    }
+  }
+});
+
+/* ───────────── souris ───────────── */
+const mouse = { x: 0, y: 0, sx: 0, sy: 0 };
+addEventListener('pointermove', e => { mouse.x = e.clientX / innerWidth * 2 - 1; mouse.y = e.clientY / innerHeight * 2 - 1; });
+
+/* ───────────── boucle ───────────── */
+const clock = new THREE.Clock(); let angle = 0;
+const v3 = new THREE.Vector3(), m4 = new THREE.Matrix4(), q4 = new THREE.Quaternion(), e4 = new THREE.Euler(), sc4 = new THREE.Vector3();
+function loop(){
+  const dt = Math.min(clock.getDelta(), .05), t = clock.elapsedTime;
+  mouse.sx += (mouse.x - mouse.sx) * .06; mouse.sy += (mouse.y - mouse.sy) * .06;
+  const s = state, scrollP = scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight);
+
+  // rotation : libre dans le héros, puis la canette se recale face caméra
+  const inHero = scrollY < innerHeight * .35;
+  if (inHero) angle += dt * .75;
+  else { const target = Math.round(angle / (Math.PI * 2)) * Math.PI * 2; angle += (target - angle) * Math.min(1, dt * 2.5); }
+  const bob = Math.sin(t * 1.3) * .035;
+
+  main.position.set(s.px, s.py + bob, 0);
+  main.rotation.set(s.rx + mouse.sy * .1, 0, s.rz - mouse.sx * .05);
+  main.scale.setScalar(s.s);
+  main.userData.spin.rotation.y = angle + flourish.v + mouse.sx * .35;
+  main.userData.shadow.material.opacity = .8 * (1 - Math.min(1, Math.abs(s.rx) * .9));
+
+  // pack
+  const sl = SLOTS[mode];
+  extras.forEach((c, i) => {
+    const k = gsap.utils.clamp(0, 1, s.pack * 1.6 - i * .25);
+    c.visible = k > .001;
+    if (!c.visible) return;
+    const e = gsap.parseEase('back.out(1.6)')(k);
+    c.position.set(sl.xs[i], (sl.ys ? sl.ys[i] : sl.y) + bob * (i % 2 ? -1 : 1) + (1 - k) * -1.2, 0);
+    c.rotation.set(.12 + mouse.sy * .1, 0, -mouse.sx * .05);
+    c.scale.setScalar(sl.s * e);
+    c.userData.spin.rotation.y = Math.sin(t * .6 + i * 1.7) * .45 + mouse.sx * .35;
+  });
+
+  // éclats flottants
+  fdata.forEach((d, i) => {
+    const y = d.y + Math.sin(t * d.sp + d.ph) * .15 + scrollP * d.depth * 9;
+    const x = mode === 'mob' ? d.x * .45 : d.x;
+    e4.set(t * d.sp + d.ph, t * d.sp * .7, d.ph); q4.setFromEuler(e4); v3.set(x, y, d.z); sc4.setScalar(d.s * s.float);
+    m4.compose(v3, q4, sc4); floaters.setMatrixAt(i, m4);
+  });
+  floaters.instanceMatrix.needsUpdate = true;
+
+  camera.position.set(s.cx + mouse.sx * .15, s.cy - mouse.sy * .1, s.cz);
+  camera.lookAt(s.tx, s.ty, 0);
+  renderer.render(scene, camera);
+
+  // callouts
+  if (s.call > .01 && mode === 'desk') {
+    main.updateMatrixWorld();
+    ANCH.forEach((a, i) => {
+      v3.set(Math.sin(a.a) * R * 1.02, a.y + .06, Math.cos(a.a) * R * 1.02); main.localToWorld(v3); v3.project(camera);
+      const x = (v3.x * .5 + .5) * innerWidth, y = (-v3.y * .5 + .5) * innerHeight;
+      const k = gsap.utils.clamp(0, 1, s.call * 1.4 - i * .12);
+      const el = coEls[i]; el.style.opacity = k; el.style.transform = `translate(${x}px,${y}px) translateY(-50%)`;
+      el.querySelector('.ln').style.transform = `scaleX(${k})`;
+    });
+  } else coEls.forEach(el => el.style.opacity = 0);
+
+  requestAnimationFrame(loop);
+}
+
+addEventListener('resize', () => {
+  renderer.setSize(innerWidth, innerHeight); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  const m = (innerWidth < 820 || innerWidth / innerHeight < .9) ? 'mob' : 'desk';
+  if (m !== mode) { mode = m; buildScroll(); ScrollTrigger.refresh(); }
+});
+
+/* ───────────── commande WhatsApp ───────────── */
+const MENU = [
+  { id:'speculos', name: EN ? 'Can’ Speculoos' : 'Can’ Spéculos', desc: EN ? 'Vanilla sponge, Speculoos spread and biscuit' : 'Génoise vanille, pâte et biscuit Spéculos', price:3500, c:'#c47e3e' },
+  { id:'pistache', name:'Can’ Pistachio', desc: EN ? 'Chocolate sponge, pistachio spread and ground pistachio' : 'Génoise chocolat, pâte et poudre de pistache', price:3500, c:'#a3c63f' },
+  { id:'oreo', name:'Can’ Oreo', desc: EN ? 'Chocolate sponge, Oreo cream and biscuit' : 'Génoise chocolat, crème et biscuit Oreo', price:2500, c:'#2a1e19' },
+  { id:'bueno', name:'Can’ Bueno', desc: EN ? 'Chocolate sponge, Bueno spread and Kinder Bueno' : 'Génoise chocolat, pâte Bueno et Kinder Bueno', price:2500, c:'#a9652d' },
+  { id:'pack', name: EN ? 'Discovery pack' : 'Pack découverte', desc: EN ? 'All 4 flavours' : 'Les 4 saveurs', price:10000, c:'#d9a54a', tip: EN ? 'Save 2,000 FCFA' : '2 000 FCFA d’économie' },
+];
+const qty = Object.fromEntries(MENU.map(m => [m.id, 0]));
+const fmt = n => n.toLocaleString('fr-FR').replace(/ | /g, ' ');
+const menuEl = document.getElementById('menu');
+MENU.forEach(m => {
+  const d = document.createElement('div'); d.className = 'item';
+  d.innerHTML = `<span class="sw" style="background:${m.c}"></span>
+    <div><h3>${m.name}${m.tip ? `<span class="tip">${m.tip}</span>` : ''}</h3><p>${m.desc}</p><div class="pr">${fmt(m.price)} FCFA</div></div>
+    <div class="qty"><button type="button" aria-label="${T.rem} ${m.name}" data-d="-1">−</button><output id="q-${m.id}">0</output><button type="button" aria-label="${T.add} ${m.name}" data-d="1">+</button></div>`;
+  d.querySelectorAll('button').forEach(b => b.addEventListener('click', () => { qty[m.id] = Math.max(0, Math.min(50, qty[m.id] + +b.dataset.d)); renderCart(); }));
+  menuEl.appendChild(d);
+});
+const note = document.getElementById('note');
+function renderCart(){
+  const lines = MENU.filter(m => qty[m.id] > 0);
+  let total = 0; const ul = document.getElementById('lines'); ul.innerHTML = '';
+  lines.forEach(m => { const t = qty[m.id] * m.price; total += t; const li = document.createElement('li'); li.innerHTML = `<span>${qty[m.id]} × ${m.name}</span><span>${fmt(t)}</span>`; ul.appendChild(li); });
+  if (!lines.length) ul.innerHTML = `<li class="empty">${T.empty}</li>`;
+  MENU.forEach(m => document.getElementById('q-' + m.id).textContent = qty[m.id]);
+  document.getElementById('total').textContent = fmt(total);
+  const msg = [T.hello, ...lines.map(m => `• ${qty[m.id]} × ${m.name} (${fmt(qty[m.id] * m.price)} FCFA)`), `${T.total} : ${fmt(total)} FCFA`];
+  if (note.value.trim()) msg.push(T.notes + ' : ' + note.value.trim());
+  const a = document.getElementById('send');
+  a.href = 'https://wa.me/237654134482?text=' + encodeURIComponent(msg.join('\n'));
+  a.setAttribute('aria-disabled', lines.length ? 'false' : 'true');
+}
+note.addEventListener('input', renderCart);
+qty.pack = 1; renderCart();
+
+document.getElementById('copy').addEventListener('click', async e => {
+  const b = e.currentTarget;
+  try { await navigator.clipboard.writeText('+237654134482'); b.textContent = T.copied; }
+  catch (err) { const r = document.createRange(); r.selectNodeContents(document.getElementById('num')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); b.textContent = T.sel; }
+  setTimeout(() => b.textContent = T.copy, 1800);
+});
+document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+  const t = document.querySelector(a.getAttribute('href')); if (!t) return; e.preventDefault();
+  window.scrollTo({ top: t.getBoundingClientRect().top + scrollY - 70, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+}));
+
+init();
+</script>
+
+</body>
+</html>
