@@ -3,7 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Amenda Cakes</title>
+<title>Amenda Cakes · Frostedcan</title>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/favicon-512.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#5c0b17">
 <meta name="description" content="Frosted Cake Can par Amenda Cakes : des gâteaux gourmands en canette, 4 saveurs. Douala, Cameroun.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,6 +40,8 @@ main{position:relative;z-index:3}
 .brand{display:flex;align-items:center;gap:12px;pointer-events:auto;text-decoration:none}
 .mono{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#8a1a2b,#4a0812);border:1.5px solid var(--gold);color:var(--gold-2);font-family:"Playfair Display",serif;font-weight:800;font-size:19px;letter-spacing:-1px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
 .brand b{display:block;font-family:"Playfair Display",serif;font-size:18px;letter-spacing:.06em;color:var(--brand-c,#f6e7c8)}
+.mono img{width:64%;height:auto;display:block;transform:translateY(-1px)}
+.brand b .wm{display:block;height:15px;aspect-ratio:720/81;background:currentColor;-webkit-mask:url(assets/wordmark-frostedcan.png) center/contain no-repeat;mask:url(assets/wordmark-frostedcan.png) center/contain no-repeat}
 .brand small{display:block;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
 .cta{pointer-events:auto;text-decoration:none;font-weight:600;font-size:14px;padding:12px 20px;border-radius:999px;background:var(--gold);color:var(--burgundy);box-shadow:0 8px 22px rgba(0,0,0,.18);transition:transform .25s}
 .cta:hover{transform:translateY(-2px)}
@@ -197,7 +203,7 @@ footer em{font-family:"Playfair Display",serif;font-style:italic;letter-spacing:
 
 </head>
 <body>
-<div id="loader"><div class="mono">AC</div></div>
+<div id="loader"><div class="mono"><img src="assets/ac-mark.png" alt="Amenda Cakes"></div></div>
 <script>
 /* le chargeur ne doit jamais bloquer la page, même si l'animation 3D échoue */
 window.hideLoader = function(){ var l = document.getElementById('loader'); if (l) l.classList.add('out'); };
@@ -221,7 +227,7 @@ window.addEventListener('unhandledrejection', function(){ setTimeout(window.hide
 <div id="callouts"></div>
 
 <header class="nav">
-  <a class="brand" href="#top"><span class="mono">AC</span><span><b>AMENDA CAKES</b><small>Frosted dreams</small></span></a>
+  <a class="brand" href="#top"><span class="mono"><img src="assets/ac-mark.png" alt=""></span><span><b><i class="wm" role="img" aria-label="Frostedcan"></i></b><small>by Amenda Cakes</small></span></a>
   <div class="navr"><button class="lang" id="lang" type="button" aria-label="Changer de langue / Switch language"><b class="fr">FR</b><i>/</i><b class="en">EN</b></button><a data-en="Order" class="cta" href="#commander">Commander</a></div>
 </header>
 
