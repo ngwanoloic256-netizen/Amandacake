@@ -198,6 +198,13 @@ footer em{font-family:"Playfair Display",serif;font-style:italic;letter-spacing:
 </head>
 <body>
 <div id="loader"><div class="mono">AC</div></div>
+<script>
+/* le chargeur ne doit jamais bloquer la page, même si l'animation 3D échoue */
+window.hideLoader = function(){ var l = document.getElementById('loader'); if (l) l.classList.add('out'); };
+setTimeout(window.hideLoader, 4000);
+window.addEventListener('error', function(){ setTimeout(window.hideLoader, 300); });
+window.addEventListener('unhandledrejection', function(){ setTimeout(window.hideLoader, 300); });
+</script>
 
 <div id="behind">
   <div class="ghost hero" data-for="0"><span>FROSTED</span><span>CAKE CAN</span></div>
@@ -364,6 +371,58 @@ footer em{font-family:"Playfair Display",serif;font-style:italic;letter-spacing:
 })();
 </script>
 <script type="module">
+const EN = window.LANG === 'en';
+const T = EN ? { empty:'No cans yet.', hello:'Hello Amenda Cakes, I would like to order:', total:'Total', notes:'Details', copy:'Copy', copied:'Copied', sel:'Selected', add:'Add', rem:'Remove' }
+  : { empty:'Aucune canette pour l’instant.', hello:'Bonjour Amenda Cakes, je souhaite commander :', total:'Total', notes:'Précisions', copy:'Copier', copied:'Copié', sel:'Sélectionné', add:'Ajouter', rem:'Retirer' };
+/* ───────────── commande WhatsApp ───────────── */
+const MENU = [
+  { id:'speculos', name: EN ? 'Can’ Speculoos' : 'Can’ Spéculos', desc: EN ? 'Vanilla sponge, Speculoos spread and biscuit' : 'Génoise vanille, pâte et biscuit Spéculos', price:3500, c:'#c47e3e' },
+  { id:'pistache', name:'Can’ Pistachio', desc: EN ? 'Chocolate sponge, pistachio spread and ground pistachio' : 'Génoise chocolat, pâte et poudre de pistache', price:3500, c:'#a3c63f' },
+  { id:'oreo', name:'Can’ Oreo', desc: EN ? 'Chocolate sponge, Oreo cream and biscuit' : 'Génoise chocolat, crème et biscuit Oreo', price:2500, c:'#2a1e19' },
+  { id:'bueno', name:'Can’ Bueno', desc: EN ? 'Chocolate sponge, Bueno spread and Kinder Bueno' : 'Génoise chocolat, pâte Bueno et Kinder Bueno', price:2500, c:'#a9652d' },
+  { id:'pack', name: EN ? 'Discovery pack' : 'Pack découverte', desc: EN ? 'All 4 flavours' : 'Les 4 saveurs', price:10000, c:'#d9a54a', tip: EN ? 'Save 2,000 FCFA' : '2 000 FCFA d’économie' },
+];
+const qty = Object.fromEntries(MENU.map(m => [m.id, 0]));
+const fmt = n => n.toLocaleString('fr-FR').replace(/ | /g, ' ');
+const menuEl = document.getElementById('menu');
+MENU.forEach(m => {
+  const d = document.createElement('div'); d.className = 'item';
+  d.innerHTML = `<span class="sw" style="background:${m.c}"></span>
+    <div><h3>${m.name}${m.tip ? `<span class="tip">${m.tip}</span>` : ''}</h3><p>${m.desc}</p><div class="pr">${fmt(m.price)} FCFA</div></div>
+    <div class="qty"><button type="button" aria-label="${T.rem} ${m.name}" data-d="-1">−</button><output id="q-${m.id}">0</output><button type="button" aria-label="${T.add} ${m.name}" data-d="1">+</button></div>`;
+  d.querySelectorAll('button').forEach(b => b.addEventListener('click', () => { qty[m.id] = Math.max(0, Math.min(50, qty[m.id] + +b.dataset.d)); renderCart(); }));
+  menuEl.appendChild(d);
+});
+const note = document.getElementById('note');
+function renderCart(){
+  const lines = MENU.filter(m => qty[m.id] > 0);
+  let total = 0; const ul = document.getElementById('lines'); ul.innerHTML = '';
+  lines.forEach(m => { const t = qty[m.id] * m.price; total += t; const li = document.createElement('li'); li.innerHTML = `<span>${qty[m.id]} × ${m.name}</span><span>${fmt(t)}</span>`; ul.appendChild(li); });
+  if (!lines.length) ul.innerHTML = `<li class="empty">${T.empty}</li>`;
+  MENU.forEach(m => document.getElementById('q-' + m.id).textContent = qty[m.id]);
+  document.getElementById('total').textContent = fmt(total);
+  const msg = [T.hello, ...lines.map(m => `• ${qty[m.id]} × ${m.name} (${fmt(qty[m.id] * m.price)} FCFA)`), `${T.total} : ${fmt(total)} FCFA`];
+  if (note.value.trim()) msg.push(T.notes + ' : ' + note.value.trim());
+  const a = document.getElementById('send');
+  a.href = 'https://wa.me/237654134482?text=' + encodeURIComponent(msg.join('\n'));
+  a.setAttribute('aria-disabled', lines.length ? 'false' : 'true');
+}
+note.addEventListener('input', renderCart);
+qty.pack = 1; renderCart();
+
+document.getElementById('copy').addEventListener('click', async e => {
+  const b = e.currentTarget;
+  try { await navigator.clipboard.writeText('+237654134482'); b.textContent = T.copied; }
+  catch (err) { const r = document.createRange(); r.selectNodeContents(document.getElementById('num')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); b.textContent = T.sel; }
+  setTimeout(() => b.textContent = T.copy, 1800);
+});
+document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+  const t = document.querySelector(a.getAttribute('href')); if (!t) return; e.preventDefault();
+  window.scrollTo({ top: t.getBoundingClientRect().top + scrollY - 70, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+}));
+
+</script>
+<script type="module">
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
@@ -399,6 +458,7 @@ const T = EN ? {
 };
 
 /* ───────────── outils ───────────── */
+if (!CanvasRenderingContext2D.prototype.roundRect) CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h){ this.rect(x, y, w, h); };
 function rng(seed){ return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function shade(hex, amt){ const n = parseInt(hex.slice(1), 16); let r = n >> 16, g = n >> 8 & 255, b = n & 255;
   const f = v => Math.max(0, Math.min(255, Math.round(amt < 0 ? v * (1 + amt) : v + (255 - v) * amt)));
@@ -515,7 +575,9 @@ function shadowTexture(){
 
 /* ───────────── scène ───────────── */
 const canvas = document.getElementById('gl');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+let renderer;
+try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); }
+catch (err) { canvas.style.display = 'none'; window.hideLoader(); throw err; } // pas de WebGL : la page reste utilisable sans la 3D
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.setSize(innerWidth, innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -651,7 +713,7 @@ async function init(){
   extras = ['speculos', 'pistache', 'oreo'].map(k => { const c = buildCan(k); c.visible = false; scene.add(c); return c; });
   buildScroll();
   requestAnimationFrame(loop);
-  setTimeout(() => document.getElementById('loader').classList.add('out'), 200);
+  setTimeout(window.hideLoader, 200);
 }
 
 /* ───────────── scroll ───────────── */
@@ -799,54 +861,7 @@ addEventListener('resize', () => {
   if (m !== mode) { mode = m; buildScroll(); ScrollTrigger.refresh(); }
 });
 
-/* ───────────── commande WhatsApp ───────────── */
-const MENU = [
-  { id:'speculos', name: EN ? 'Can’ Speculoos' : 'Can’ Spéculos', desc: EN ? 'Vanilla sponge, Speculoos spread and biscuit' : 'Génoise vanille, pâte et biscuit Spéculos', price:3500, c:'#c47e3e' },
-  { id:'pistache', name:'Can’ Pistachio', desc: EN ? 'Chocolate sponge, pistachio spread and ground pistachio' : 'Génoise chocolat, pâte et poudre de pistache', price:3500, c:'#a3c63f' },
-  { id:'oreo', name:'Can’ Oreo', desc: EN ? 'Chocolate sponge, Oreo cream and biscuit' : 'Génoise chocolat, crème et biscuit Oreo', price:2500, c:'#2a1e19' },
-  { id:'bueno', name:'Can’ Bueno', desc: EN ? 'Chocolate sponge, Bueno spread and Kinder Bueno' : 'Génoise chocolat, pâte Bueno et Kinder Bueno', price:2500, c:'#a9652d' },
-  { id:'pack', name: EN ? 'Discovery pack' : 'Pack découverte', desc: EN ? 'All 4 flavours' : 'Les 4 saveurs', price:10000, c:'#d9a54a', tip: EN ? 'Save 2,000 FCFA' : '2 000 FCFA d’économie' },
-];
-const qty = Object.fromEntries(MENU.map(m => [m.id, 0]));
-const fmt = n => n.toLocaleString('fr-FR').replace(/ | /g, ' ');
-const menuEl = document.getElementById('menu');
-MENU.forEach(m => {
-  const d = document.createElement('div'); d.className = 'item';
-  d.innerHTML = `<span class="sw" style="background:${m.c}"></span>
-    <div><h3>${m.name}${m.tip ? `<span class="tip">${m.tip}</span>` : ''}</h3><p>${m.desc}</p><div class="pr">${fmt(m.price)} FCFA</div></div>
-    <div class="qty"><button type="button" aria-label="${T.rem} ${m.name}" data-d="-1">−</button><output id="q-${m.id}">0</output><button type="button" aria-label="${T.add} ${m.name}" data-d="1">+</button></div>`;
-  d.querySelectorAll('button').forEach(b => b.addEventListener('click', () => { qty[m.id] = Math.max(0, Math.min(50, qty[m.id] + +b.dataset.d)); renderCart(); }));
-  menuEl.appendChild(d);
-});
-const note = document.getElementById('note');
-function renderCart(){
-  const lines = MENU.filter(m => qty[m.id] > 0);
-  let total = 0; const ul = document.getElementById('lines'); ul.innerHTML = '';
-  lines.forEach(m => { const t = qty[m.id] * m.price; total += t; const li = document.createElement('li'); li.innerHTML = `<span>${qty[m.id]} × ${m.name}</span><span>${fmt(t)}</span>`; ul.appendChild(li); });
-  if (!lines.length) ul.innerHTML = `<li class="empty">${T.empty}</li>`;
-  MENU.forEach(m => document.getElementById('q-' + m.id).textContent = qty[m.id]);
-  document.getElementById('total').textContent = fmt(total);
-  const msg = [T.hello, ...lines.map(m => `• ${qty[m.id]} × ${m.name} (${fmt(qty[m.id] * m.price)} FCFA)`), `${T.total} : ${fmt(total)} FCFA`];
-  if (note.value.trim()) msg.push(T.notes + ' : ' + note.value.trim());
-  const a = document.getElementById('send');
-  a.href = 'https://wa.me/237654134482?text=' + encodeURIComponent(msg.join('\n'));
-  a.setAttribute('aria-disabled', lines.length ? 'false' : 'true');
-}
-note.addEventListener('input', renderCart);
-qty.pack = 1; renderCart();
-
-document.getElementById('copy').addEventListener('click', async e => {
-  const b = e.currentTarget;
-  try { await navigator.clipboard.writeText('+237654134482'); b.textContent = T.copied; }
-  catch (err) { const r = document.createRange(); r.selectNodeContents(document.getElementById('num')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); b.textContent = T.sel; }
-  setTimeout(() => b.textContent = T.copy, 1800);
-});
-document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
-  const t = document.querySelector(a.getAttribute('href')); if (!t) return; e.preventDefault();
-  window.scrollTo({ top: t.getBoundingClientRect().top + scrollY - 70, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-}));
-
-init();
+init().catch(err => { console.error(err); window.hideLoader(); });
 </script>
 
 </body>
